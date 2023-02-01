@@ -2,9 +2,12 @@ package com.exam.ble.peripheral;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -54,12 +57,7 @@ public class PeripheralActivity extends AppCompatActivity {
         showStatusMsg("Close Server");
         PeripheralManager.getInstance(PeripheralActivity.this).close();
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                finish();
-            }
-        }, 500);
+        new Handler().postDelayed(() -> finish(), 500);
     }
 
     private void initView() {
@@ -67,25 +65,22 @@ public class PeripheralActivity extends AppCompatActivity {
         btnSend = (Button) findViewById(R.id.btnSend);
         btnClose = (Button) findViewById(R.id.btnClose);
 
-        btnSend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        btnSend.setOnClickListener(view -> {
 
-                /*Calendar calendar = Calendar.getInstance();
-                String todayTime = (calendar.get(Calendar.MONTH) + 1)
-                        + "/" + calendar.get(Calendar.DAY_OF_MONTH)
-                        + " " + calendar.get(Calendar.HOUR_OF_DAY)
-                        + ":" + calendar.get(Calendar.MINUTE)
-                        + ":" + calendar.get(Calendar.SECOND);*/
-                Intent intent = getIntent();//new
-                String text = intent.getStringExtra(Intent.EXTRA_TEXT);
+            /*Calendar calendar = Calendar.getInstance();
+            String todayTime = (calendar.get(Calendar.MONTH) + 1)
+                    + "/" + calendar.get(Calendar.DAY_OF_MONTH)
+                    + " " + calendar.get(Calendar.HOUR_OF_DAY)
+                    + ":" + calendar.get(Calendar.MINUTE)
+                    + ":" + calendar.get(Calendar.SECOND);*/
+            Intent intent = getIntent();//new
+            String text = intent.getStringExtra(Intent.EXTRA_TEXT);
 //                TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
 //                String num = telephonyManager.getDeviceId();
 
-                //PeripheralManager.getInstance(PeripheralActivity.this).sendData(todayTime);
-                PeripheralManager.getInstance(PeripheralActivity.this).sendData(text);
-                //PeripheralManager.getInstance(PeripheralActivity.this).sendData(num);//new ends
-            }
+            //PeripheralManager.getInstance(PeripheralActivity.this).sendData(todayTime);
+            PeripheralManager.getInstance(PeripheralActivity.this).sendData(text);
+            //PeripheralManager.getInstance(PeripheralActivity.this).sendData(num);//new ends
         });
 
         btnClose.setOnClickListener(new View.OnClickListener() {
@@ -109,7 +104,26 @@ public class PeripheralActivity extends AppCompatActivity {
      * 불루투스 기능을 켠다.
      */
     private void requestEnableBLE() {
+//        int PERMISSION_ALL = 1;
+//        String[] PERMISSIONS = {
+//                Manifest.permission.BLUETOOTH_CONNECT,
+//                Manifest.permission.BLUETOOTH_SCAN,
+//                Manifest.permission.BLUETOOTH_ADVERTISE
+//        };
+
+//        if (!hasPermissions(this, PERMISSIONS)) {
+//            ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
+//        }
         Intent ble_enable_intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+//            // here to request the missing permissions, and then overriding
+//            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+//            //                                          int[] grantResults)
+//            ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
+//            // to handle the case where the user grants the permission. See the documentation
+//            // for ActivityCompat#requestPermissions for more details.
+//            return;
+//        }
         startActivityForResult(ble_enable_intent, REQUEST_ENABLE_BT);
     }
 

@@ -147,7 +147,25 @@ public class CentralActivity extends AppCompatActivity {
 
 
     private void requestEnableBLE() {
+        int PERMISSION_ALL = 1;
+        String[] PERMISSIONS = {
+                Manifest.permission.BLUETOOTH_CONNECT,
+                Manifest.permission.BLUETOOTH_SCAN
+        };
+
+//        if (!hasPermissions(this, PERMISSIONS)) {
+//            ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
+//        }
         Intent ble_enable_intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
         startActivityForResult(ble_enable_intent, REQUEST_ENABLE_BT);
     }
 
@@ -201,6 +219,7 @@ public class CentralActivity extends AppCompatActivity {
         public void requestEnableBLE() {
             CentralActivity.this.requestEnableBLE();
         }
+
 
         @Override
         public void requestLocationPermission() {

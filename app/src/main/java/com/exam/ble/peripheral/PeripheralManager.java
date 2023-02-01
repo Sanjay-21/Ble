@@ -1,5 +1,6 @@
 package com.exam.ble.peripheral;
 
+import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
@@ -14,6 +15,7 @@ import android.bluetooth.le.AdvertiseData;
 import android.bluetooth.le.AdvertiseSettings;
 import android.bluetooth.le.BluetoothLeAdvertiser;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.ParcelUuid;
 import android.util.Log;
 
@@ -23,6 +25,9 @@ import static com.exam.ble.Constants.CHARACTERISTIC_UUID;
 import static com.exam.ble.Constants.CONFIG_UUID;
 import static com.exam.ble.Constants.SERVICE_STRING;
 import static com.exam.ble.Constants.SERVICE_UUID;
+
+import androidx.core.app.ActivityCompat;
+
 
 public class PeripheralManager {
 
@@ -110,7 +115,6 @@ public class PeripheralManager {
         AdvertiseData advScanResponse = new AdvertiseData.Builder()
                 .setIncludeDeviceName(true)
                 .build();
-
         mAdvertiser.startAdvertising(advSettings, advData, advScanResponse, mAdvCallBack);
     }
 
